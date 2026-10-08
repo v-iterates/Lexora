@@ -16,7 +16,7 @@ ________________________________________________________________________________
    - Manages: Users, lesson content, and system settings.
 2.  Instructor:
    - Creates and manages: Language lessons, provides feedback.
-3. Learner:
+4. Learner:
    - Takes: Language lessons, tracks progress, and interacts with other learners.
 
 _______________________________________________________________________________________________________
