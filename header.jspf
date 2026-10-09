@@ -1,0 +1,4 @@
+<header class="site-header">
+  <a class="brand" href="${pageContext.request.contextPath}/"><span class="brand-mark">✳</span><span>lexora</span></a>
+  <nav class="main-nav"><a href="${pageContext.request.contextPath}/#library">The Library</a><a href="${pageContext.request.contextPath}/#method">Our Method</a><a class="nav-cta" href="${pageContext.request.contextPath}/#library">Begin exploring ↗</a></nav>
+</header>

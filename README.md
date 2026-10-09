@@ -1,102 +1,39 @@
-# Lexora- Online Language Learning Platform 
+# Lexora — Language, lived through stories
 
-# Summary:
-The objective is to create an online language learning platform where users can 
-learn new languages through interactive lessons, track their progress, and interact with other 
-learners. Administrators will manage users and content. 
-# Description:
-The platform will offer interactive language lessons, quizzes, and practice 
-exercises. Users can track their learning progress, interact with other learners, and receive 
-feedback. Administrators will manage users, lesson content, and system settings.
+A Java web application prototype for learning languages through short stories, contextual vocabulary, and cultural notes. This first-review build focuses on project structure, database design/connectivity, and responsive UI.
 
-_______________________________________________________________________________________________________
+## Stack
+- Java 17+, Maven
+- Jakarta Servlets 6 / JSP, Apache Tomcat 10.1+
+- MySQL 8+, JDBC
+- HTML/CSS and minimal vanilla JavaScript
 
-# User Types: 
-1. Admin:
-   - Manages: Users, lesson content, and system settings.
-2.  Instructor:
-   - Creates and manages: Language lessons, provides feedback.
-4. Learner:
-   - Takes: Language lessons, tracks progress, and interacts with other learners.
+## Included
+- Responsive landing page with lesson cards loaded from MySQL
+- Lesson reading page with vocabulary and cultural notes
+- JDBC connection factory and DAO classes
+- `/health` endpoint to test database connectivity
+- MySQL schema and starter seed data
 
-_______________________________________________________________________________________________________
+Not yet implemented: registration/login, role-protected dashboards, quiz submission/scoring, saved-word operations, lesson authoring/approval, feedback submission, community posting, admin settings/activity UI. Do not claim these are complete.
 
+## Setup
+1. Install JDK 17+, Maven, MySQL 8+, and Tomcat 10.1+.
+2. Run `database/schema.sql` in MySQL Workbench.
+3. Run `database/seed.sql`.
+4. Default local config is `localhost:3306/lexora_db`, user `root`, blank password. If your local password differs, set environment variables `LEXORA_DB_URL`, `LEXORA_DB_USER`, `LEXORA_DB_PASSWORD` before launching Tomcat. Never commit secrets.
+5. From project root run `mvn clean package`. Output: `target/lexora.war`.
+6. Copy WAR to Tomcat `webapps`, start Tomcat.
+7. Open `http://localhost:8080/lexora/` and `http://localhost:8080/lexora/health`.
 
-# Functionalities for Admin: 
+Tomcat 10.1 uses `jakarta.servlet.*`; Tomcat 9 is not compatible without conversion.
 
-1. User Management: 
-○ Input: User details (name, email, role). 
-○ Output: Confirmation message for successful user creation/update/deletion. 
-○ Functionality: Manage user accounts and roles.
+## Common errors
+- Communications link failure: MySQL is stopped or URL/port is wrong.
+- Access denied: check environment credentials.
+- Unknown database/no lesson cards: run schema and seed scripts.
+- 404: check Tomcat deployment and `/lexora/` context path.
+- Maven command missing: install Maven or use IDE Maven integration.
 
-2. Content Management: 
-○ Input: Lesson details (content, quizzes). 
-○ Output: Content approval status. 
-○ Functionality: Approve or reject lesson content submitted by instructors.
-
-3. System Settings: 
-○ Input: Configuration settings. 
-○ Output: Confirmation message for successful settings update. 
-○ Functionality: Manage system-wide settings.
-
-## Admin Dashboard: 
-● User Management: Table listing user accounts with options for editing and deleting. 
-● Content Management: Table listing lesson content pending approval. 
-● System Settings: Panel for managing system-wide settings. 
-● Activity Monitoring: Real-time updates on system activity and user actions. 
-
-_______________________________________________________________________________________________________
-
-# Functionalities for Instructor: 
-1. Lesson Creation: 
-○ Input: Lesson details (content, quizzes). 
-○ Output: Confirmation message for successful lesson creation. 
-○ Functionality: Create and manage language lessons.
-
-2. Provide Feedback: 
-○ Input: Feedback details. 
-○ Output: Confirmation message for successful feedback submission. 
-○ Functionality: Provide feedback on learner progress.
-
-3. Track Learner Progress: 
-○ Input: Learner progress data. 
-○ Output: Progress reports. 
-○ Functionality: Track and view learner progress.
-
-## Instructor Dashboard: 
-● Lesson Management: List of created lessons with options for updating and editing. 
-● Feedback Management: Section for providing and viewing feedback to/from learners. 
-● Learner Progress: Table displaying learner performance metrics. 
-● Lesson Analytics: Graphs and reports on lesson engagement and learner 
-performance. 
-
-_______________________________________________________________________________________________________
-
-# Functionalities for Learner: 
-1. Lesson Participation: 
-○ Input: Lesson selection. 
-○ Output: Lesson content. 
-○ Functionality: Take language lessons.
-
-2. Progress Tracking: 
-○ Input: Learning data. 
-○ Output: Progress reports and visualizations. 
-○ Functionality: Track and view learning progress.
-
-3. Interact with Learners: 
-○ Input: Interaction details (messages, forum posts). 
-○ Output: Confirmation message for successful interaction. 
-○ Functionality: Interact with other learners.
-
-4. Profile Management: 
-○ Input: Profile details (name, email, learning preferences). 
-○ Output: Confirmation message for successful profile update. 
-○ Functionality: Manage personal profile details.
-
-## Learner Dashboard: 
-● Lesson Participation: List of lessons with options to start or review. 
-● Progress Tracking: Visualizations of learning progress and achievement. 
-● Interactions: Section for messages and forum posts with other learners. 
-● Profile Management: Form for updating profile details and learning preferences.
-
-_______________________________________________________________________________________________________
+## Architecture
+Browser -> Servlet -> DAO -> DBConnection (JDBC) -> MySQL. JSP renders request data; DAOs isolate SQL. Prepared statements are used for parameterized queries.
